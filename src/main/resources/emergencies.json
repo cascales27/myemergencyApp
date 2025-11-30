@@ -1,0 +1,19 @@
+[
+  {
+    "tipo": "Otro",
+    "ubicacion": "cs",
+    "fecha": "2025-11-21T18:30:42.2108185",
+    "gps": {
+      "latitud": 40.40438561746962,
+      "longitud": -3.694225165358059,
+      "precision": 9.000946207418615
+    },
+    "usuario": {
+      "nombre": "sf",
+      "telefono": "564",
+      "contactosConfianza": [
+        "546"
+      ]
+    }
+  }
+]

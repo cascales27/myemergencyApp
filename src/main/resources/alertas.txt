@@ -1,0 +1,48 @@
+Emergencia{tipo='General', ubicacion='calle 5'}
+========================================
+🕒 Fecha y hora: 2025-11-08 12:25:59
+🚨 Tipo de emergencia: General
+📍 Ubicación: calle 5
+👤 Usuario: jose a
+☎️ Teléfono: 666111444
+========================================
+
+========================================
+🕒 Fecha y hora: 2025-11-08 12:32:00
+🚨 Tipo de emergencia: General
+📍 Ubicación: calle22
+👤 Usuario: josele
+☎️ Teléfono: 666444111
+========================================
+
+========================================
+🕒 Fecha y hora: 2025-11-08 12:40:41
+🚨 Tipo de emergencia: General
+📍 Ubicación: av illice 5
+👤 Usuario: mati
+☎️ Teléfono: 555444111
+========================================
+
+========================================
+🕒 Fecha y hora: 2025-11-08 12:43:16
+🚨 Tipo de emergencia: General
+📍 Ubicación: avd traba
+👤 Usuario: rodri
+☎️ Teléfono: 54546464
+========================================
+
+========================================
+🕒 Fecha y hora: 2025-11-08 12:49:18
+🚨 Tipo de emergencia: Médico
+📍 Ubicación: calle del olvido 25
+👤 Usuario: davis
+☎️ Teléfono: 54654644
+========================================
+
+========================================
+🕒 Fecha y hora: 2025-11-08T12:55:50.150455300
+🚨 Tipo de emergencia: Caída
+📍 Ubicación: calle 18
+👤 Usuario: pedro s
+☎️ Teléfono: 55442155
+========================================
