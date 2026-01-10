@@ -7,33 +7,23 @@ public class FallDetector extends Thread {
 
     private boolean running = true;
     private final UserAccount user;
-    private boolean enviandoEmergencia = false;
 
     public FallDetector(UserAccount user) {
         this.user = user;
-        setDaemon(true); // No bloquea el cierre de la app
     }
 
     @Override
     public void run() {
 
-        EmergencyManager em = new EmergencyManager();
-
         try {
             while (running) {
 
-                Thread.sleep(10000); // Cada 10 segundos
+                Thread.sleep(10000);
 
-                if (!running) break;
+                if (Math.random() > 0.92) {
 
-                // Probabilidad simulada
-                if (Math.random() > 0.92 && !enviandoEmergencia) {
-                    enviandoEmergencia = true;
-                    System.out.println("\n⚠ DETECTOR: Caída detectada, enviando emergencia automáticamente...");
-
+                    EmergencyManager em = new EmergencyManager();
                     em.iniciar(user, true);
-
-                    enviandoEmergencia = false;
                 }
             }
 
@@ -46,3 +36,4 @@ public class FallDetector extends Thread {
         running = false;
     }
 }
+

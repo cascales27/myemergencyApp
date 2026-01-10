@@ -39,9 +39,9 @@ public class Main {
                     usuario = auth.login(u, p);
 
                     if (usuario == null) {
-                        System.out.println("❌ Usuario o contraseña incorrectos.\n");
+                        System.out.println("? Usuario o contraseña incorrectos.\n");
                     } else {
-                        System.out.println("\n✔ Sesión iniciada como: " + usuario.getUsername());
+                        System.out.println("\n? Sesión iniciada como: " + usuario.getUsername());
 
                         detector = new FallDetector(usuario);
                         detector.start();
@@ -62,16 +62,13 @@ public class Main {
                     String tel = sc.nextLine();
 
                     if (auth.register(nu, np, nc, tel)) {
-                        System.out.println("✔ Registro exitoso. Ya puedes iniciar sesión.\n");
+                        System.out.println("? Registro exitoso. Ya puedes iniciar sesión.\n");
                     }
                     break;
 
                 case "3":
                     System.out.println("Saliendo del sistema...");
                     return;
-
-                default:
-                    System.out.println("Opción no válida\n");
             }
         }
 
@@ -90,7 +87,6 @@ public class Main {
 
                 case "1":
                     new EmergencyManager().iniciar(usuario, false);
-
                     break;
 
                 case "2":
@@ -102,10 +98,8 @@ public class Main {
                     if (detector != null) detector.detener();
                     ejecutando = false;
                     break;
-
-                default:
-                    System.out.println("Opción no válida");
             }
         }
     }
 }
+
