@@ -23,7 +23,7 @@ public class FallDetector extends Thread {
                 if (Math.random() > 0.92) {
 
                     EmergencyManager em = new EmergencyManager();
-                    em.iniciar(user, true);
+                    em.iniciarEmergencia(user, true);
                 }
             }
 

@@ -17,6 +17,10 @@ public class EmergencyManager {
                 ? "Emergencia detectada automáticamente"
                 : "Emergencia activada manualmente";
 
+        String estado = automatica
+                ? "ENVIADA_AUTOMATICA"
+                : "ENVIADA_MANUAL";
+
         EmergencyRecord record = new EmergencyRecord(
                 usuario.getUsername(),
                 tipo,
@@ -25,7 +29,8 @@ public class EmergencyManager {
                 coords[1],
                 usuario.getDatosUsuario().getNombre(),
                 usuario.getDatosUsuario().getTelefono(),
-                usuario.getDatosUsuario().getContactosConfianza()
+                usuario.getDatosUsuario().getContactosConfianza(),
+                estado
         );
 
         historyManager.saveHistory(record);
@@ -39,6 +44,7 @@ public class EmergencyManager {
             System.out.println("------------------------------------");
             System.out.println("Usuario: " + e.getUsuario());
             System.out.println("Tipo: " + e.getTipo());
+            System.out.println("Estado: " + e.getEstado());
             System.out.println("Ubicación: " + e.getUbicacion());
             System.out.println("Coordenadas: " + e.getLat() + ", " + e.getLng());
             System.out.println("Nombre afectado: " + e.getNombreUsuario());

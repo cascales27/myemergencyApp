@@ -11,11 +11,20 @@ public class EmergencyRecord {
     private double lng;
     private String nombreUsuario;
     private String telefonoUsuario;
-    private List<String> contactos;
+    private List<String> contactosConfianza;
+    private String estado; // <-- NUEVO
 
-    public EmergencyRecord(String usuario, String tipo, String ubicacion,
-                           double lat, double lng, String nombreUsuario,
-                           String telefonoUsuario, List<String> contactos) {
+    public EmergencyRecord(
+            String usuario,
+            String tipo,
+            String ubicacion,
+            double lat,
+            double lng,
+            String nombreUsuario,
+            String telefonoUsuario,
+            List<String> contactosConfianza,
+            String estado
+    ) {
         this.usuario = usuario;
         this.tipo = tipo;
         this.ubicacion = ubicacion;
@@ -23,16 +32,44 @@ public class EmergencyRecord {
         this.lng = lng;
         this.nombreUsuario = nombreUsuario;
         this.telefonoUsuario = telefonoUsuario;
-        this.contactos = contactos;
+        this.contactosConfianza = contactosConfianza;
+        this.estado = estado;
     }
 
-    public String getUsuario() { return usuario; }
-    public String getTipo() { return tipo; }
-    public String getUbicacion() { return ubicacion; }
-    public double getLat() { return lat; }
-    public double getLng() { return lng; }
-    public String getNombreUsuario() { return nombreUsuario; }
-    public String getTelefonoUsuario() { return telefonoUsuario; }
-    public List<String> getContactos() { return contactos; }
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public String getTelefonoUsuario() {
+        return telefonoUsuario;
+    }
+
+    public List<String> getContactosConfianza() {
+        return contactosConfianza;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
 }
 

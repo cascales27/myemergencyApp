@@ -86,11 +86,11 @@ public class Main {
             switch (op) {
 
                 case "1":
-                    new EmergencyManager().iniciar(usuario, false);
+                    new EmergencyManager().iniciarEmergencia(usuario, false);
                     break;
 
                 case "2":
-                    new EmergencyManager().verHistorial();
+                    new EmergencyManager().mostrarHistorial();
                     break;
 
                 case "3":
