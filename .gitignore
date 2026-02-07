@@ -1,1 +1,15 @@
 emergency_history.json
+# Compiled files
+*.class
+
+# Output folders
+out/
+SistemaEmergencias/out/
+SistemaEmergencias/SistemaEmergencias/out/
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
