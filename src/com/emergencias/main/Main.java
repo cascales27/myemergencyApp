@@ -4,7 +4,10 @@ import com.emergencias.auth.AuthSystem;
 import com.emergencias.auth.UserAccount;
 import com.emergencias.controller.EmergencyManager;
 import com.emergencias.detector.FallDetector;
+import com.emergencias.model.HealthCenter;
+import com.emergencias.util.HealthCenterLoader;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -45,6 +48,19 @@ public class Main {
 
                         detector = new FallDetector(usuario);
                         detector.start();
+
+                        // ===== NUEVO: CARGAR CENTROS DE SALUD =====
+                        List<HealthCenter> healthCenters = HealthCenterLoader.loadCenters();
+                        System.out.println("\nTotal centros de salud cargados: " + healthCenters.size());
+
+                        // Mostrar ejemplo del primer centro
+                        if (!healthCenters.isEmpty()) {
+                            HealthCenter first = healthCenters.get(0);
+                            System.out.println("Primer centro: " + first.getMU_NOMBRE());
+                            double[] coords = first.getGeometry().getCoordinates();
+                            System.out.println("Coordenadas: " + coords[0] + ", " + coords[1]);
+                        }
+                        // =========================================
                     }
                     break;
 
@@ -102,4 +118,5 @@ public class Main {
         }
     }
 }
+
 
