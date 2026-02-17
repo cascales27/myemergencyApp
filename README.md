@@ -1,39 +1,56 @@
-DOCUMENTACIÓN – SISTEMA DE EMERGENCIAS
+Documentación
 
-Funcionalidad: detección automática con cuenta atrás
+🚨 Sistema de Emergencias
+📌 Descripción general
 
-1. Descripción general
+El Sistema de Emergencias es una aplicación desarrollada en Java que permite registrar emergencias de forma manual y detectar situaciones de riesgo automáticamente mediante un sistema de detección de caídas ejecutado en segundo plano.
 
-El sistema de emergencias permite al usuario registrar emergencias de forma manual y también detectar situaciones de riesgo de forma automática mediante un detector de caídas que se ejecuta en segundo plano.
+El proyecto aplica:
 
-La aplicación está desarrollada en Java y utiliza control de versiones con Git, siguiendo una metodología basada en ramas (main, developer y feature_*).
+Programación Orientada a Objetos (POO)
 
-2. Arquitectura básica del sistema
-Clases principales:
+Uso de hilos (Thread)
 
+Persistencia de datos en formato JSON
+
+Control de versiones con Git mediante metodología por ramas
+
+🏗️ Arquitectura del sistema
+Clases principales
 Main
-Controla el flujo principal del programa y el menú de usuario.
+
+Controla el flujo principal del programa y el menú interactivo de usuario.
 
 EmergencyManager
-Centraliza la lógica de creación y almacenamiento de emergencias.
+
+Centraliza la lógica de creación y gestión de emergencias.
 
 FallDetector
+
 Hilo independiente que simula la detección automática de caídas.
 
 EmergencyRecord
-Modelo de datos que representa una emergencia.
+
+Modelo de datos que representa una emergencia registrada.
 
 EmergencyHistoryManager
-Gestiona la persistencia del historial en formato JSON.
+
+Gestiona la persistencia del historial de emergencias en formato JSON.
 
 UserAccount / UserData
-Gestionan la información del usuario autenticado.
 
-3. Detección automática de emergencias
+Gestionan la información del usuario autenticado en el sistema.
 
-La detección automática se implementa mediante la clase FallDetector, que extiende Thread.
+⚙️ Detección automática de emergencias
 
-Funcionamiento:
+La detección automática se implementa mediante la clase:
+
+FallDetector
+
+
+Esta clase extiende Thread y se ejecuta en segundo plano.
+
+Funcionamiento
 
 El detector se ejecuta en segundo plano.
 
@@ -45,11 +62,11 @@ Se muestra un aviso por consola.
 
 Se inicia una cuenta atrás de 10 segundos.
 
-Si no hay intervención, la emergencia se envía automáticamente.
+Si no hay intervención del usuario, la emergencia se envía automáticamente.
 
-Este diseño simula el comportamiento de sistemas reales de detección de emergencias en dispositivos de asistencia.
+Este diseño simula el comportamiento de sistemas reales de asistencia y monitorización.
 
-4. Cuenta atrás de confirmación
+⏳ Cuenta atrás de confirmación
 
 Cuando se detecta una posible caída:
 
@@ -59,17 +76,83 @@ Al finalizar el tiempo:
 
 La emergencia se registra automáticamente.
 
-Se guarda en el historial con el tipo “Emergencia detectada automáticamente”.
+Se guarda en el historial con el tipo
+"Emergencia detectada automáticamente".
 
-Esto permite simular un margen de reacción antes de enviar la alerta definitiva.
+Este mecanismo permite simular un margen de reacción antes de enviar la alerta definitiva.
 
-5. Consideraciones técnicas y limitaciones
+💾 Persistencia de datos
+
+El sistema utiliza almacenamiento en formato JSON para guardar y recuperar el historial de emergencias.
+
+📚 Librería utilizada
+
+Se emplea la librería:
+
+Gson
+
+
+Ubicación:
+
+lib/gson-2.13.2.jar
+
+
+Gson permite convertir objetos Java en JSON (serialización) y JSON en objetos Java (deserialización).
+
+🗂️ Clase responsable de la persistencia
+
+La gestión del almacenamiento se realiza mediante:
+
+EmergencyHistoryManager
+
+Responsabilidades principales
+
+Guardar nuevas emergencias en formato JSON.
+
+Leer el historial almacenado.
+
+Convertir objetos EmergencyRecord a JSON y viceversa.
+
+Gestionar la escritura y lectura segura de archivos.
+
+📦 Modelo de datos persistido
+
+Los datos se almacenan a partir del modelo:
+
+EmergencyRecord
+
+
+Cada registro incluye información como:
+
+Tipo de emergencia
+
+Fecha y hora
+
+Estado
+
+Datos asociados al usuario
+
+Estos objetos se serializan automáticamente a JSON mediante Gson.
+
+🔄 Flujo de almacenamiento
+
+Se genera una nueva emergencia.
+
+EmergencyManager la envía a EmergencyHistoryManager.
+
+El objeto EmergencyRecord se convierte a JSON.
+
+Se guarda en el fichero correspondiente.
+
+Al iniciar la aplicación, el historial puede recuperarse desde el archivo JSON.
+
+⚠️ Consideraciones técnicas y limitaciones
 
 El detector automático se ejecuta en un hilo independiente.
 
 El menú principal utiliza entrada por consola (Scanner).
 
-El uso concurrente de hilos y entrada estándar puede provocar comportamientos no deterministas (por ejemplo, que la cuenta atrás no siempre se muestre).
+El uso concurrente de hilos y entrada estándar puede provocar comportamientos no deterministas (por ejemplo, que la cuenta atrás no siempre se muestre correctamente).
 
 Por este motivo:
 
@@ -77,43 +160,45 @@ Se prioriza la estabilidad del sistema.
 
 La lógica automática se mantiene separada del flujo interactivo del menú.
 
-El sistema demuestra correctamente el uso de concurrencia, aunque con las limitaciones propias de aplicaciones de consola.
-
 Estas decisiones son habituales en aplicaciones educativas y están justificadas a nivel técnico.
 
-6. Control de versiones (Git)
+🧩 Control de versiones (Git)
 
 Se ha seguido una metodología basada en ramas:
 
-main
-Versión estable del proyecto.
+main → Versión estable del proyecto.
 
-developer
-Rama de integración de nuevas funcionalidades.
+developer → Rama de integración de nuevas funcionalidades.
 
 feature_confirmacion_emergencia
-Implementación de confirmación de emergencias.
 
 feature_confirmacion_cuenta_atras
-Implementación de cuenta atrás en detección automática.
 
-feature_estado_emergencia / feature_estado_simple_emergencia
-Pruebas y mejoras incrementales relacionadas con el estado de las emergencias.
+feature_estado_emergencia
 
-Solo las funcionalidades consideradas estables se han integrado en developer.
+feature_estado_simple_emergencia
 
-7. Conclusión
+Cada nueva funcionalidad se desarrolla en una rama independiente y solo se integra en developer cuando se considera estable.
 
-El proyecto implementa:
+▶️ Cómo ejecutar el proyecto
+Compilación (PowerShell / Windows)
+javac -cp "lib\gson-2.13.2.jar" -d bin (Get-ChildItem -Recurse -Filter *.java -Path src | ForEach-Object { $_.FullName })
+
+Ejecución
+java -cp "bin;lib\gson-2.13.2.jar" com.emergencias.main.Main
+
+🎯 Conclusión
+
+El proyecto implementa correctamente:
 
 Programación orientada a objetos.
 
-Uso de hilos (Thread).
+Uso de hilos (Thread) para tareas en segundo plano.
 
-Persistencia de datos en JSON.
+Persistencia de datos en JSON mediante Gson.
 
 Control de versiones profesional con Git.
 
-Desarrollo incremental mediante ramas de funcionalidades.
+Desarrollo incremental basado en ramas de funcionalidades.
 
-El sistema constituye una base sólida y funcional para una aplicación de gestión de emergencias, cumpliendo los objetivos planteados y dejando margen para futuras ampliaciones.
+El sistema constituye una base sólida y funcional para una aplicación de gestión de emergencias, preparada para trabajo colaborativo y ampliaciones futuras.
