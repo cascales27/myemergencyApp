@@ -21,7 +21,7 @@ public EmergencyEvent detectarCaida(UserData usuario) {
     String tipo = "Caída";
     String ubicacion = "Desconocida";
 
-    GPSLocation gps = GPSManager.getGPS();
+    GPSLocation gps = null;
 
     return new EmergencyEvent(
             tipo,
