@@ -1,9 +1,12 @@
 package com.emergencias.detector;
 
-import com.emergencias.model.UserData;
-import com.emergencias.model.EmergencyEvent;
 import com.emergencias.gps.GPSLocation;
-import com.emergencias.gps.GPSManager;
+import com.emergencias.model.EmergencyEvent;
+import com.emergencias.model.HealthCenter;
+import com.emergencias.model.UserData;
+import com.emergencias.utils.HealthCenterFinder;
+
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,16 +15,18 @@ import java.util.Scanner;
 
 public class EmergencyDetector {
 
-    /**
-     * Detecta una emergencia solicitando los datos al usuario.
-     */
-    public EmergencyEvent detectarEmergencia() {
+    private final ArrayList<HealthCenter> centros;
+
+    public EmergencyDetector(ArrayList<HealthCenter> centros) {
+        this.centros = (centros == null) ? new ArrayList<>() : centros;
+    }
+
+    public EmergencyEvent detectarEmergencia(UserData usuario) {
 
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("¿Desea activar una emergencia? (S/N)");
-        String activar = scanner.nextLine().trim().toLowerCase();
-        if (!activar.equals("s")) {
+        if (!scanner.nextLine().trim().equalsIgnoreCase("s")) {
             System.out.println("Cancelado por el usuario.");
             return null;
         }
@@ -32,47 +37,40 @@ public class EmergencyDetector {
         System.out.println("3 - Médico");
         System.out.println("4 - Incendio");
         System.out.println("5 - Otro");
-        String tipo = obtenerTipo(scanner.nextLine());
+        String tipo = obtenerTipo(scanner.nextLine().trim());
 
-        System.out.println("Introduce la ubicación manual de la emergencia:");
-        String ubicacion = scanner.nextLine();
+        System.out.println("Municipio de la emergencia (ej: Benidorm):");
+        String municipio = scanner.nextLine().trim();
 
-        System.out.println("Introduce tu nombre:");
-        String nombre = scanner.nextLine();
+        System.out.println("Calle / referencia (opcional):");
+        String calle = scanner.nextLine().trim();
 
-        System.out.println("Introduce tu teléfono:");
-        String telefono = scanner.nextLine();
+        String ubicacion = municipio.isBlank() ? calle : (calle.isBlank() ? municipio : municipio + ", " + calle);
 
-        // Contactos de confianza
-        List<String> contactos = new ArrayList<>();
+        // ✅ GPS desde JSON
+        GPSLocation gps = null;
 
-        System.out.println("¿Desea notificar a algún contacto de confianza? (S/N)");
-        if (scanner.nextLine().trim().equalsIgnoreCase("s")) {
+        List<HealthCenter> matches = HealthCenterFinder.findByMunicipio(centros, municipio);
 
-            while (true) {
-                System.out.println("Introduce el teléfono del contacto de confianza:");
-                contactos.add(scanner.nextLine());
+        if (!matches.isEmpty()) {
+            // Si hay varios en el mismo municipio, enseña el primero (o podrías preguntar)
+            HealthCenter elegido = matches.get(0);
 
-                System.out.println("¿Desea agregar otro contacto de confianza? (S/N)");
-                if (!scanner.nextLine().trim().equalsIgnoreCase("s")) {
-                    break;
-                }
-            }
+            gps = new GPSLocation(elegido.getLatitud(), elegido.getLongitud());
+
+            System.out.println("===== CENTRO SANITARIO (JSON) =====");
+            System.out.println("Municipio buscado: " + municipio);
+            System.out.println("Municipio encontrado: " + elegido.getMunicipio());
+            System.out.println(elegido);
+        } else {
+            System.out.println("⚠ No se encontró municipio en el JSON: " + municipio);
         }
-
-        // Crear el usuario con sus contactos
-        UserData usuario = new UserData(nombre, telefono, contactos);
-
-        // Obtener GPS real o simulado
-        GPSLocation gps = GPSManager.getGPS();
 
         System.out.println("¿Confirmar envío de alerta? (S/N)");
         if (!scanner.nextLine().trim().equalsIgnoreCase("s")) {
             System.out.println("Cancelado por el usuario.");
             return null;
         }
-
-        System.out.println("Generando evento de emergencia…");
 
         return new EmergencyEvent(
                 tipo,
@@ -93,13 +91,3 @@ public class EmergencyDetector {
         };
     }
 }
-
-
-
-
-
-
-
-
-
-

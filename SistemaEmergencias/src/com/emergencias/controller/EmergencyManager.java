@@ -31,7 +31,7 @@ public class EmergencyManager {
         AlertSender sender = new AlertSender();
         sender.enviarAlerta(evento);
 
-        System.out.println("✔ Alerta enviada correctamente.");
+
     }
 
     private EmergencyEvent crearEvento() {
@@ -47,7 +47,7 @@ public class EmergencyManager {
         UserData datos = usuario.getDatosUsuario();
 
         // GPS automático
-        GPSLocation gps = generarGPS();
+        GPSLocation gps = null;
 
         return new EmergencyEvent(
                 tipo,
