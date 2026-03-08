@@ -29,7 +29,17 @@ public class EmergencyManager {
         EmergencyEvent evento = crearEvento();
 
         AlertSender sender = new AlertSender();
-        sender.enviarAlerta(evento);
+
+        // ENVÍO A 112
+        sender.enviarAlerta112(evento);
+
+        // PREGUNTAR POR CONTACTOS
+        System.out.println("¿Desea avisar también a los contactos de confianza? (S/N)");
+        String opcion = scanner.nextLine();
+
+        if (opcion.equalsIgnoreCase("s")) {
+            sender.enviarAlertasContactos(evento);
+        }
 
         System.out.println("✔ Alerta enviada correctamente.");
     }
@@ -74,6 +84,3 @@ public class EmergencyManager {
         return new GPSLocation(lat, lon);
     }
 }
-
-
-
