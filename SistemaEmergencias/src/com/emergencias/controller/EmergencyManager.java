@@ -5,6 +5,7 @@ import com.emergencias.auth.UserAccount;
 import com.emergencias.gps.GPSLocation;
 import com.emergencias.model.EmergencyEvent;
 import com.emergencias.model.UserData;
+import com.emergencias.persistence.EmergencyHistoryManager;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -30,6 +31,7 @@ public class EmergencyManager {
 
         AlertSender sender = new AlertSender();
         sender.enviarAlerta(evento);
+        EmergencyHistoryManager.guardarEmergencia(evento);
 
         System.out.println("✔ Alerta enviada correctamente.");
     }
