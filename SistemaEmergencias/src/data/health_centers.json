@@ -1,0 +1,37 @@
+{
+  "features": [
+    {
+      "properties": {
+        "MU_NOMBRE": "Alicante",
+        "CS_DENOMINACION": "Hospital General Universitario de Alicante",
+        "CS_TIPO": "Hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.4810, 38.3452]
+      }
+    },
+    {
+      "properties": {
+        "MU_NOMBRE": "Alicante",
+        "CS_DENOMINACION": "Centro de Salud San Blas",
+        "CS_TIPO": "Centro de Salud"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.4875, 38.3720]
+      }
+    },
+    {
+      "properties": {
+        "MU_NOMBRE": "Villajoyosa",
+        "CS_DENOMINACION": "Hospital Marina Baixa",
+        "CS_TIPO": "Hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.2297, 38.5478]
+      }
+    }
+  ]
+}

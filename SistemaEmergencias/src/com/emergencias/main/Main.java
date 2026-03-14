@@ -4,6 +4,7 @@ import com.emergencias.auth.AuthManager;
 import com.emergencias.auth.UserAccount;
 import com.emergencias.controller.EmergencyManager;
 import com.emergencias.model.UserData;
+import com.emergencias.history.EmergencyHistoryViewer;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -29,6 +30,8 @@ public class Main {
         }
 
         System.out.println("✔ Sesión iniciada correctamente.\n");
+
+        EmergencyHistoryViewer.mostrarHistorial();
 
         // 🔄 Comprobar si faltan datos del usuario
         completarDatosSiFaltan(usuarioActual, scanner, auth);
