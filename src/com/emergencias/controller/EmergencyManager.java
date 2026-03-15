@@ -1,84 +1,95 @@
 package com.emergencias.controller;
 
-import com.emergencias.auth.UserAccount;
-import com.emergencias.history.EmergencyHistoryManager;
+import com.emergencias.model.EmergencyEvent;
 import com.emergencias.model.EmergencyRecord;
-import com.emergencias.util.GPSService;
+import com.emergencias.model.UserData;
+import com.emergencias.gps.GPSLocation;
+import com.emergencias.history.EmergencyHistoryManager;
 
-import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 
 public class EmergencyManager {
 
-    public void iniciar(UserAccount usuario, boolean automatica) {
+    private EmergencyHistoryManager historyManager;
 
-        Scanner scanner = new Scanner(System.in);
+    public EmergencyManager() {
+        historyManager = new EmergencyHistoryManager();
+    }
 
-        if (automatica) {
-            System.out.println("\n⚠ DETECTOR: Posible caída detectada automáticamente");
-            System.out.print("¿Desea activar una emergencia? (S/N): ");
-        } else {
-            System.out.print("¿Desea activar una emergencia? (S/N): ");
-        }
+    /**
+     * Activa una emergencia manual.
+     *
+     * @param tipo    Tipo de emergencia
+     * @param ubicacion Ubicación descriptiva
+     * @param usuario Usuario afectado
+     * @return evento generado
+     */
+    public EmergencyEvent activarEmergenciaManual(String tipo, String ubicacion, UserData usuario) {
 
-        String respuesta = scanner.nextLine().trim();
-
-        if (!respuesta.equalsIgnoreCase("s")) {
-            System.out.println("Cancelado.");
-            return;
-        }
-
-        System.out.println("Activando emergencia automática...");
-
-        String tipo = automatica
-                ? "Emergencia detectada automáticamente"
-                : "Emergencia activada manualmente";
-
-        String ubicacion = "Ubicación actual detectada por GPS";
-
-        double[] coordenadas = GPSService.getCoordinates();
-
-        EmergencyRecord record = new EmergencyRecord(
-                usuario.getUsername(),
-                tipo,
-                ubicacion,
-                coordenadas[0],
-                coordenadas[1],
-                usuario.getDatosUsuario().getNombre(),
-                usuario.getDatosUsuario().getTelefono(),
-                usuario.getDatosUsuario().getContactosConfianza()
+        // Generar coordenadas simuladas
+        GPSLocation coordenadas = new GPSLocation(
+                40 + Math.random() * 2,   // Latitud simulada
+                -3 + Math.random() * 2,   // Longitud simulada
+                5.0                        // Precisión simulada ±5m
         );
 
-        EmergencyHistoryManager history = new EmergencyHistoryManager();
-        history.saveHistory(record);
-
         System.out.println("🚨 Emergencia enviada");
-        System.out.println("Coordenadas: " + coordenadas[0] + ", " + coordenadas[1]);
+        System.out.println("Coordenadas: " + coordenadas.getLatitud() + ", " + coordenadas.getLongitud());
+
+        EmergencyEvent evento = new EmergencyEvent(
+                tipo,
+                ubicacion,
+                coordenadas,
+                usuario
+        );
+
+        // Guardar en historial
+        EmergencyRecord record = new EmergencyRecord(
+                usuario.getNombre(),
+                tipo,
+                ubicacion,
+                coordenadas.getLatitud(),
+                coordenadas.getLongitud(),
+                usuario.getNombre(),
+                usuario.getTelefono(),
+                usuario.getContactos() != null ? usuario.getContactos() : new ArrayList<>()
+        );
+
+        historyManager.saveHistory(record);
+
+        return evento;
     }
 
-    public void verHistorial() {
+    /**
+     * Obtiene el historial completo de emergencias.
+     */
+    public List<EmergencyRecord> getHistorial() {
+        return historyManager.loadHistory();
+    }
 
-        EmergencyHistoryManager hm = new EmergencyHistoryManager();
-        var lista = hm.loadHistory();
-
-        if (lista == null || lista.isEmpty()) {
-            System.out.println("No hay emergencias registradas.");
-            return;
+    /**
+     * Muestra un tutorial básico para un tipo de emergencia.
+     *
+     * @param tipo Tipo de emergencia
+     */
+    public void mostrarTutorial(String tipo) {
+        // Para simplificar, usamos tutoriales en consola
+        System.out.println("\n=== TUTORIAL DE PRIMEROS AUXILIOS ===");
+        switch (tipo.toLowerCase()) {
+            case "caida":
+                System.out.println("Si la persona ha sufrido una caída: Revisar respiración y llamar a emergencias.");
+                break;
+            case "atragantamiento":
+                System.out.println("Si la persona se atraganta: Aplicar maniobra de Heimlich.");
+                break;
+            default:
+                System.out.println("Tutorial no disponible para este tipo de emergencia.");
         }
-
-        System.out.println("\n=== HISTORIAL DE EMERGENCIAS ===");
-
-        for (EmergencyRecord r : lista) {
-            System.out.println("------------------------------------");
-            System.out.println("Usuario: " + r.getUsuario());
-            System.out.println("Tipo: " + r.getTipo());
-            System.out.println("Ubicación: " + r.getUbicacion());
-            System.out.println("Coordenadas: " + r.getLat() + ", " + r.getLng());
-            System.out.println("Nombre afectado: " + r.getNombreUsuario());
-            System.out.println("Teléfono: " + r.getTelefonoUsuario());
-            System.out.println("------------------------------------");
-        }
+        System.out.println();
     }
 }
+
 
 
 

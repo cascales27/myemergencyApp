@@ -1,88 +1,113 @@
 package com.emergencias.main;
 
-import com.emergencias.auth.AuthSystem;
-import com.emergencias.auth.UserAccount;
 import com.emergencias.controller.EmergencyManager;
-import com.emergencias.detector.FallDetector;
+import com.emergencias.model.UserData;
+import com.emergencias.model.EmergencyRecord;
 import com.emergencias.model.HealthCenter;
 import com.emergencias.util.HealthCenterLoader;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
 
-        // Inicializar sistema de autenticación
-        AuthSystem auth = new AuthSystem();
-        UserAccount usuario = null;
-        FallDetector detector = null;
+        // Usuario simulado
+        UserData usuario = new UserData(
+                "Jose Acas",
+                "5455466",
+                "joseacas",
+                new ArrayList<>(), // contactos
+                new ArrayList<>()  // contactos de confianza
+        );
+
+        EmergencyManager em = new EmergencyManager();
+
+        // -------------------
+        // CARGA DE CENTROS DE SALUD
+        // -------------------
+        List<HealthCenter> centrosSalud = HealthCenterLoader.loadFromResource();
+        System.out.println("✅ Centros de salud cargados: " + centrosSalud.size());
 
         System.out.println("=== Sistema de Emergencias ===");
+        System.out.println("Usuario: " + usuario.getUsername());
+        System.out.println("Bienvenido, " + usuario.getNombre());
 
-        // Login simple
-        System.out.print("Usuario: ");
-        String username = scanner.nextLine();
-        System.out.print("Contraseña: ");
-        String password = scanner.nextLine();
-
-        usuario = auth.login(username, password);
-
-        if (usuario == null) {
-            System.out.println("Usuario o contraseña incorrectos.");
-            return;
-        }
-
-        System.out.println("Bienvenido, " + usuario.getDatosUsuario().getNombre());
-
-        // Inicializar detector de caídas
-        detector = new FallDetector(usuario);
-
-        // Cargar centros de salud
-        String path = "C:\\ProyectoJava\\SistemaEmergencias\\data\\health_centers.json";
-        List<HealthCenter> healthCenters = HealthCenterLoader.loadFromFile(path);
-
-        if (healthCenters.isEmpty()) {
-            System.out.println("No se pudieron cargar los centros de salud.");
-        } else {
-            System.out.println("Se cargaron " + healthCenters.size() + " centros de salud.");
-            HealthCenter first = healthCenters.get(0);
-            System.out.println("Primer centro: " + first.getMU_NOMBRE() + " - " + first.getDenominacion());
-        }
-
-        // Menú simple
-        boolean running = true;
-        while (running) {
+        boolean salir = false;
+        while (!salir) {
             System.out.println("\nOpciones:");
             System.out.println("1. Iniciar emergencia manual");
             System.out.println("2. Ver historial");
-            System.out.println("3. Salir");
+            System.out.println("3. Ver tutorial de primeros auxilios");
+            System.out.println("4. Ver centros de salud cargados");
+            System.out.println("5. Salir");
             System.out.print("Seleccione una opción: ");
 
-            int opcion = Integer.parseInt(scanner.nextLine());
+            String opcion = scanner.nextLine();
 
             switch (opcion) {
-                case 1:
-                    new EmergencyManager().iniciar(usuario, false);
+                case "1":
+                    System.out.print("¿Desea activar una emergencia? (S/N): ");
+                    String respuesta = scanner.nextLine();
+                    if (respuesta.equalsIgnoreCase("S")) {
+                        em.activarEmergenciaManual(
+                                "Emergencia activada manualmente",
+                                "Ubicación actual detectada por GPS",
+                                usuario
+                        );
+                    }
                     break;
-                case 2:
-                    new EmergencyManager().verHistorial();
+                case "2":
+                    List<EmergencyRecord> historial = em.getHistorial();
+                    System.out.println("\n=== HISTORIAL DE EMERGENCIAS ===");
+                    if (historial.isEmpty()) {
+                        System.out.println("No hay registros aún.");
+                    } else {
+                        for (EmergencyRecord record : historial) {
+                            System.out.println("------------------------------------");
+                            System.out.println("Usuario: " + record.getUsuario());
+                            System.out.println("Tipo: " + record.getTipo());
+                            System.out.println("Ubicación: " + record.getUbicacion());
+                            System.out.println("Coordenadas: " + record.getLat() + ", " + record.getLng());
+                            System.out.println("Nombre afectado: " + record.getNombreUsuario());
+                            System.out.println("Teléfono: " + record.getTelefonoUsuario());
+                        }
+                        System.out.println("------------------------------------");
+                    }
                     break;
-                case 3:
-                    running = false;
+                case "3":
+                    System.out.print("Ingrese el tipo de emergencia para el tutorial: ");
+                    String tipo = scanner.nextLine();
+                    em.mostrarTutorial(tipo);
+                    break;
+                case "4":
+                    System.out.println("\n=== CENTROS DE SALUD CARGADOS ===");
+                    if (centrosSalud.isEmpty()) {
+                        System.out.println("No se han cargado centros de salud.");
+                    } else {
+                        for (HealthCenter hc : centrosSalud) {
+                            System.out.println("------------------------------------");
+                            System.out.println("Nombre: " + hc.getMU_NOMBRE());
+                            System.out.println("Denominación: " + hc.getDenominacion());
+                            System.out.println("Tipo: " + hc.getTipo());
+                            System.out.println("Coordenadas: " + hc.getGeometry().getCoordinates()[0] + ", " +
+                                               hc.getGeometry().getCoordinates()[1]);
+                        }
+                        System.out.println("------------------------------------");
+                    }
+                    break;
+                case "5":
+                    salir = true;
                     System.out.println("Saliendo...");
                     break;
                 default:
-                    System.out.println("Opción no válida.");
+                    System.out.println("Opción inválida.");
             }
         }
 
         scanner.close();
     }
 }
-
-
-
