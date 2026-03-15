@@ -9,7 +9,7 @@ public class TestHealthCenters {
 
     public static void main(String[] args) {
         // Carga de centros de salud usando el nuevo método de recurso
-        List<HealthCenter> centers = HealthCenterLoader.loadFromResource();
+        List<HealthCenter> centers = HealthCenterLoader.loadFromFile();
 
         // Mensaje de depuración
         System.out.println("✅ Centros de salud cargados: " + centers.size());

@@ -5,6 +5,7 @@ import com.emergencias.model.UserData;
 import com.emergencias.model.EmergencyRecord;
 import com.emergencias.model.HealthCenter;
 import com.emergencias.util.HealthCenterLoader;
+import com.emergencias.util.HealthCenterUtils;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class Main {
         // -------------------
         // CARGA DE CENTROS DE SALUD
         // -------------------
-        List<HealthCenter> centrosSalud = HealthCenterLoader.loadFromResource();
+        List<HealthCenter> centrosSalud = HealthCenterLoader.loadFromFile();
         System.out.println("✅ Centros de salud cargados: " + centrosSalud.size());
 
         System.out.println("=== Sistema de Emergencias ===");
@@ -43,7 +44,8 @@ public class Main {
             System.out.println("2. Ver historial");
             System.out.println("3. Ver tutorial de primeros auxilios");
             System.out.println("4. Ver centros de salud cargados");
-            System.out.println("5. Salir");
+            System.out.println("5. Ver centro de salud más cercano");
+            System.out.println("6. Salir");
             System.out.print("Seleccione una opción: ");
 
             String opcion = scanner.nextLine();
@@ -93,13 +95,35 @@ public class Main {
                             System.out.println("Nombre: " + hc.getMU_NOMBRE());
                             System.out.println("Denominación: " + hc.getDenominacion());
                             System.out.println("Tipo: " + hc.getTipo());
-                            System.out.println("Coordenadas: " + hc.getGeometry().getCoordinates()[0] + ", " +
-                                               hc.getGeometry().getCoordinates()[1]);
+                            System.out.println("Coordenadas: " + hc.getGeometry().getCoordinates()[0] +
+                                               ", " + hc.getGeometry().getCoordinates()[1]);
                         }
                         System.out.println("------------------------------------");
                     }
                     break;
                 case "5":
+                    if (centrosSalud.isEmpty()) {
+                        System.out.println("No hay centros de salud cargados.");
+                    } else {
+                        // Coordenadas del usuario simuladas
+                        double userLat = 40.4168;
+                        double userLng = -3.7038;
+
+                        HealthCenter cercano = HealthCenterUtils.getCentroMasCercano(userLat, userLng, centrosSalud);
+                        if (cercano != null) {
+                            System.out.println("\n=== CENTRO DE SALUD MÁS CERCANO ===");
+                            System.out.println("Nombre: " + cercano.getMU_NOMBRE());
+                            System.out.println("Denominación: " + cercano.getDenominacion());
+                            System.out.println("Tipo: " + cercano.getTipo());
+                            System.out.println("Coordenadas: " + cercano.getGeometry().getCoordinates()[0] +
+                                               ", " + cercano.getGeometry().getCoordinates()[1]);
+                            System.out.println("------------------------------------");
+                        } else {
+                            System.out.println("No se pudo determinar el centro más cercano.");
+                        }
+                    }
+                    break;
+                case "6":
                     salir = true;
                     System.out.println("Saliendo...");
                     break;
