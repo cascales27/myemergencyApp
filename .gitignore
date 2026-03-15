@@ -1,2 +1,5 @@
 sources.txt
 javac
+# ignorar compilados
+bin/
+*.class
