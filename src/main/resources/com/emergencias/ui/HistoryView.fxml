@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="15" alignment="CENTER"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.emergencias.ui.HistoryController"
+      styleClass="root">
+
+    <Label text="Historial de Emergencias"
+           styleClass="label"/>
+
+    <TableView fx:id="tableHistory" prefWidth="400">
+
+        <columns>
+            <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="120"/>
+            <TableColumn fx:id="colUbicacion" text="Ubicación" prefWidth="140"/>
+            <TableColumn fx:id="colTipo" text="Tipo" prefWidth="120"/>
+            <TableColumn fx:id="colFecha" text="Fecha" />
+        </columns>
+
+    </TableView>
+
+    <Button fx:id="btnVolver"
+            text="Volver al menú"
+            prefWidth="200"
+            onAction="#volverMenu"/>
+
+</VBox>

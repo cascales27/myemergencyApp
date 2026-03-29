@@ -1,0 +1,50 @@
+/* Fondo de toda la app */
+.root {
+    -fx-background-color: #f4f6f8;
+}
+
+/* Títulos */
+.label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+/* Botones */
+.button {
+    -fx-background-color: #2c7be5;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 6;
+}
+
+.button:hover {
+    -fx-background-color: #1a68d1;
+}
+
+/* Tabla */
+.table-view {
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-background-color: white;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+}
+
+/* Filas alternadas */
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+/* Fila seleccionada */
+.table-row-cell:selected {
+    -fx-background-color: #2c7be5;
+    -fx-text-fill: white;
+}

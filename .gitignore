@@ -13,3 +13,7 @@ SistemaEmergencias/SistemaEmergencias/out/
 
 # OS
 .DS_Store
+
+bin/
+javafx-sdk-*/
+sources.txt
