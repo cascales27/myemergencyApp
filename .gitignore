@@ -1,13 +1,19 @@
-sources.txt
-javac
-# ignorar compilados
-bin/
+emergency_history.json
+
+# Compiled files
 *.class
 
 # Output folders
+bin/
 out/
 SistemaEmergencias/out/
 SistemaEmergencias/SistemaEmergencias/out/
+
+# JavaFX SDK
+javafx-sdk-*/
+
+# Otros
+sources.txt
 
 # IDE
 .idea/
