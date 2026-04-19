@@ -5,6 +5,7 @@ import com.emergencias.model.EmergencyRecord;
 import com.emergencias.model.UserData;
 import com.emergencias.gps.GPSLocation;
 import com.emergencias.history.EmergencyHistoryManager;
+import com.emergencias.database.EmergencyDAO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,16 +14,15 @@ import java.util.List;
 public class EmergencyManager {
 
     private EmergencyHistoryManager historyManager;
+    private EmergencyDAO emergencyDAO;
 
     public EmergencyManager() {
         historyManager = new EmergencyHistoryManager();
+        emergencyDAO = new EmergencyDAO(); // ✅ conexión a BD
     }
 
     /**
      * Activa una emergencia manual.
-     *
-     * IMPORTANTE:
-     * Ahora recibe coordenadas reales desde el GPS.
      */
     public EmergencyEvent activarEmergenciaManual(
             String tipo,
@@ -31,7 +31,6 @@ public class EmergencyManager {
             GPSLocation coordenadas
     ) {
 
-        // 🚨 DEBUG
         System.out.println("🚨 Emergencia enviada");
         System.out.println("Coordenadas: " +
                 coordenadas.getLatitud() + ", " +
@@ -44,8 +43,9 @@ public class EmergencyManager {
                 usuario
         );
 
-        // 📅 Fecha con formato humano
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         String fecha = LocalDateTime.now().format(formatter);
 
         EmergencyRecord record = new EmergencyRecord(
@@ -60,21 +60,19 @@ public class EmergencyManager {
                 fecha
         );
 
+        // 🟢 1. Guardar en historial local (UI)
         historyManager.saveHistory(record);
+
+        // 🔵 2. Guardar en MySQL (ESTO FALTABA)
+        emergencyDAO.insertEmergency(evento);
 
         return evento;
     }
 
-    /**
-     * Obtiene el historial completo de emergencias.
-     */
     public List<EmergencyRecord> getHistorial() {
         return historyManager.loadHistory();
     }
 
-    /**
-     * Muestra un tutorial básico para un tipo de emergencia.
-     */
     public void mostrarTutorial(String tipo) {
         System.out.println("\n=== TUTORIAL DE PRIMEROS AUXILIOS ===");
 
